@@ -10,7 +10,8 @@ const {
   title,
   description = "AI Infra and agent engineering notes, curated with explicit evidence and factual boundaries.",
 } = Astro.props;
-const withBase = (path) => `${import.meta.env.BASE_URL}${path.replace(/^\//, "")}`;
+const baseUrl = import.meta.env.BASE_URL.replace(/\/?$/, "/");
+const withBase = (path) => `${baseUrl}${path.replace(/^\//, "")}`;
 ---
 
 <!doctype html>
