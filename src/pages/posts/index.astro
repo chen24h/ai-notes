@@ -1,0 +1,20 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PostCard from "../../components/PostCard.astro";
+
+const posts = (await getCollection("posts", ({ data }) => data.status === "published")).sort(
+  (a, b) => b.data.publishedAt.getTime() - a.data.publishedAt.getTime(),
+);
+---
+
+<BaseLayout title="All Posts | Tower Notes" description="All published notes and essays.">
+  <section class="page-header">
+    <p class="eyebrow">Archive</p>
+    <h1>文章归档</h1>
+    <p>按统一 schema 维护：来源、事实台账、结论边界，缺一不发。</p>
+  </section>
+  <section class="post-grid">
+    {posts.map((post) => <PostCard id={post.id} data={post.data} />)}
+  </section>
+</BaseLayout>

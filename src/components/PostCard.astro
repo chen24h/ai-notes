@@ -1,0 +1,30 @@
+---
+interface Props {
+  id: string;
+  data: {
+    title: string;
+    summary: string;
+    category: string;
+    tags: string[];
+    publishedAt: Date;
+    thesis: string;
+  };
+}
+
+const { id, data } = Astro.props;
+---
+
+<article class="post-card">
+  <div class="post-meta-row">
+    <span class="pill">{data.category}</span>
+    <time datetime={data.publishedAt.toISOString()}>
+      {data.publishedAt.toLocaleDateString("zh-CN")}
+    </time>
+  </div>
+  <h2><a href={`/posts/${id}`}>{data.title}</a></h2>
+  <p>{data.summary}</p>
+  <p class="thesis">{data.thesis}</p>
+  <div class="tag-row">
+    {data.tags.map((tag) => <span class="tag">#{tag}</span>)}
+  </div>
+</article>

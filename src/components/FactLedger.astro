@@ -1,0 +1,42 @@
+---
+interface Fact {
+  claim: string;
+  evidence: string;
+  source: string;
+  confidence: "high" | "medium" | "low";
+  boundary?: string;
+}
+
+interface Props {
+  facts: Fact[];
+}
+
+const { facts } = Astro.props;
+---
+
+<section class="panel">
+  <div class="section-heading">
+    <p class="eyebrow">Fact Ledger</p>
+    <h2>事实台账</h2>
+  </div>
+  <div class="ledger">
+    {
+      facts.map((fact, index) => (
+        <article class="ledger-item">
+          <div class="ledger-head">
+            <span class="ledger-index">{String(index + 1).padStart(2, "0")}</span>
+            <span class={`confidence confidence-${fact.confidence}`}>{fact.confidence}</span>
+          </div>
+          <h3>{fact.claim}</h3>
+          <p>{fact.evidence}</p>
+          <p>
+            <a href={fact.source} target="_blank" rel="noreferrer">
+              Evidence link
+            </a>
+          </p>
+          {fact.boundary ? <p class="boundary">Boundary: {fact.boundary}</p> : null}
+        </article>
+      ))
+    }
+  </div>
+</section>

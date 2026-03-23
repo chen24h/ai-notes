@@ -1,0 +1,52 @@
+---
+import { getCollection, render } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import FactLedger from "../../components/FactLedger.astro";
+import SourceList from "../../components/SourceList.astro";
+
+export async function getStaticPaths() {
+  const posts = await getCollection("posts", ({ data }) => data.status === "published");
+
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+---
+
+<BaseLayout title={`${post.data.title} | Tower Notes`} description={post.data.summary}>
+  <article class="article-shell">
+    <header class="article-header">
+      <p class="eyebrow">{post.data.category}</p>
+      <h1>{post.data.title}</h1>
+      <p class="article-summary">{post.data.summary}</p>
+      <div class="article-meta">
+        <span>Published {post.data.publishedAt.toLocaleDateString("zh-CN")}</span>
+        {post.data.updatedAt ? (
+          <span>Updated {post.data.updatedAt.toLocaleDateString("zh-CN")}</span>
+        ) : null}
+      </div>
+      <div class="tag-row">
+        {post.data.tags.map((tag) => <span class="tag">#{tag}</span>)}
+      </div>
+    </header>
+
+    <section class="article-body panel prose">
+      <div class="callout">
+        <p class="eyebrow">Truth Standard</p>
+        <p>{post.data.truthStandard}</p>
+      </div>
+      <div class="callout">
+        <p class="eyebrow">Core Thesis</p>
+        <p>{post.data.thesis}</p>
+      </div>
+      <Content />
+    </section>
+
+    <FactLedger facts={post.data.facts} />
+    <SourceList sources={post.data.sources} />
+  </article>
+</BaseLayout>
