@@ -10,6 +10,7 @@ const {
   title,
   description = "AI Infra and agent engineering notes, curated with explicit evidence and factual boundaries.",
 } = Astro.props;
+const withBase = (path) => `${import.meta.env.BASE_URL}${path.replace(/^\//, "")}`;
 ---
 
 <!doctype html>
@@ -26,7 +27,7 @@ const {
   <body>
     <div class="site-shell">
       <header class="site-header">
-        <a class="brand" href="/">
+        <a class="brand" href={withBase("/")}>
           <span class="brand-mark">TT</span>
           <span class="brand-copy">
             <strong>Tower Notes</strong>
@@ -34,9 +35,9 @@ const {
           </span>
         </a>
         <nav class="site-nav" aria-label="Main navigation">
-          <a href="/">首页</a>
-          <a href="/posts">文章</a>
-          <a href="/manifesto">写作原则</a>
+          <a href={withBase("/")}>首页</a>
+          <a href={withBase("/posts")}>文章</a>
+          <a href={withBase("/manifesto")}>写作原则</a>
         </nav>
       </header>
       <main>

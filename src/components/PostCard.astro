@@ -12,6 +12,7 @@ interface Props {
 }
 
 const { id, data } = Astro.props;
+const withBase = (path) => `${import.meta.env.BASE_URL}${path.replace(/^\//, "")}`;
 ---
 
 <article class="post-card">
@@ -21,7 +22,7 @@ const { id, data } = Astro.props;
       {data.publishedAt.toLocaleDateString("zh-CN")}
     </time>
   </div>
-  <h2><a href={`/posts/${id}`}>{data.title}</a></h2>
+  <h2><a href={withBase(`/posts/${id}`)}>{data.title}</a></h2>
   <p>{data.summary}</p>
   <p class="thesis">{data.thesis}</p>
   <div class="tag-row">

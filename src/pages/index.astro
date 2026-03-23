@@ -6,6 +6,7 @@ import PostCard from "../components/PostCard.astro";
 const posts = (await getCollection("posts", ({ data }) => data.status === "published"))
   .sort((a, b) => b.data.publishedAt.getTime() - a.data.publishedAt.getTime())
   .slice(0, 3);
+const withBase = (path) => `${import.meta.env.BASE_URL}${path.replace(/^\//, "")}`;
 ---
 
 <BaseLayout
@@ -20,8 +21,8 @@ const posts = (await getCollection("posts", ({ data }) => data.status === "publi
         这里不是内容农场。每篇内容都要求来源、验证时间、置信度和结论边界。先求真，再求锋利。
       </p>
       <div class="hero-actions">
-        <a class="button button-solid" href="/posts">查看文章</a>
-        <a class="button button-outline" href="/manifesto">阅读写作原则</a>
+        <a class="button button-solid" href={withBase("/posts")}>查看文章</a>
+        <a class="button button-outline" href={withBase("/manifesto")}>阅读写作原则</a>
       </div>
     </div>
     <div class="hero-panel">
