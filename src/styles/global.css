@@ -339,6 +339,17 @@ a {
   background: var(--surface-strong);
 }
 
+.prose :global(img) {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  margin: 1.25rem auto;
+  border-radius: 1rem;
+  border: 1px solid var(--line);
+  background: var(--surface-strong);
+}
+
 .ledger {
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }

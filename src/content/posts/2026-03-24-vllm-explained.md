@@ -78,8 +78,6 @@ facts:
 
 **vLLM 是一个围绕 KV cache 管理、请求调度和服务接口做深度优化的 LLM serving engine。**
 
-![vLLM official logo](https://raw.githubusercontent.com/vllm-project/vllm/main/docs/assets/logos/vllm-logo-text-light.png)
-
 它真正解决的问题，不是“模型能不能跑”，而是下面这些更接近工程现实的问题：
 
 - 多请求同时进来时，GPU 怎么尽量吃满
