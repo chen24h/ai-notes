@@ -1,0 +1,50 @@
+<svg width="1200" height="760" viewBox="0 0 1200 760" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="760" rx="28" fill="#F6F1E7"/>
+  <rect x="48" y="48" width="1104" height="664" rx="24" fill="#FFFaf2" stroke="#D9CDBA" stroke-width="2"/>
+  <text x="78" y="104" fill="#2D241B" font-family="Georgia, serif" font-size="34" font-weight="700">Volcano Scheduler: One Scheduling Cycle</text>
+  <text x="78" y="142" fill="#6B5B4B" font-family="Arial, sans-serif" font-size="20">核心结构：OpenSession -&gt; 按 action 顺序执行 -&gt; CloseSession；插件通过 session extension points 介入。</text>
+
+  <rect x="88" y="194" width="210" height="110" rx="18" fill="#EFE3D1" stroke="#D8CAB3" stroke-width="2"/>
+  <text x="118" y="240" fill="#B4491F" font-family="Arial, sans-serif" font-size="22" font-weight="700">runOnce()</text>
+  <text x="118" y="274" fill="#2D241B" font-family="Arial, sans-serif" font-size="18">scheduler.go</text>
+
+  <rect x="350" y="194" width="250" height="110" rx="18" fill="#F7EFE2" stroke="#D8CAB3" stroke-width="2"/>
+  <text x="378" y="240" fill="#B4491F" font-family="Arial, sans-serif" font-size="22" font-weight="700">OpenSession()</text>
+  <text x="378" y="274" fill="#2D241B" font-family="Arial, sans-serif" font-size="18">snapshot + plugin hooks</text>
+
+  <rect x="650" y="194" width="472" height="110" rx="18" fill="#2D241B"/>
+  <text x="682" y="238" fill="#FFFaf2" font-family="Arial, sans-serif" font-size="22" font-weight="700">Execute actions in configured order</text>
+  <text x="682" y="274" fill="#F3E8DA" font-family="Arial, sans-serif" font-size="18">enqueue / allocate / backfill / preempt / reclaim / shuffle</text>
+
+  <path d="M298 249H350" stroke="#B4491F" stroke-width="4" stroke-linecap="round"/>
+  <path d="M600 249H650" stroke="#B4491F" stroke-width="4" stroke-linecap="round"/>
+
+  <rect x="120" y="380" width="214" height="180" rx="20" fill="#FBF4EA" stroke="#D8CAB3" stroke-width="2"/>
+  <text x="148" y="420" fill="#B4491F" font-family="Arial, sans-serif" font-size="22" font-weight="700">Enqueue</text>
+  <text x="148" y="454" fill="#2D241B" font-family="Arial, sans-serif" font-size="18">筛选可入队作业</text>
+  <text x="148" y="486" fill="#6B5B4B" font-family="Arial, sans-serif" font-size="17">Pending -&gt; Inqueue</text>
+  <text x="148" y="516" fill="#6B5B4B" font-family="Arial, sans-serif" font-size="17">避免资源不足时</text>
+  <text x="148" y="542" fill="#6B5B4B" font-family="Arial, sans-serif" font-size="17">提前创建大量 Pod</text>
+
+  <rect x="360" y="380" width="214" height="180" rx="20" fill="#FBF4EA" stroke="#D8CAB3" stroke-width="2"/>
+  <text x="388" y="420" fill="#B4491F" font-family="Arial, sans-serif" font-size="22" font-weight="700">Allocate</text>
+  <text x="388" y="454" fill="#2D241B" font-family="Arial, sans-serif" font-size="18">核心分配动作</text>
+  <text x="388" y="486" fill="#6B5B4B" font-family="Arial, sans-serif" font-size="17">queue -&gt; job -&gt; task</text>
+  <text x="388" y="516" fill="#6B5B4B" font-family="Arial, sans-serif" font-size="17">predicate -&gt; node order</text>
+  <text x="388" y="542" fill="#6B5B4B" font-family="Arial, sans-serif" font-size="17">再决定绑定</text>
+
+  <rect x="600" y="380" width="214" height="180" rx="20" fill="#FBF4EA" stroke="#D8CAB3" stroke-width="2"/>
+  <text x="628" y="420" fill="#B4491F" font-family="Arial, sans-serif" font-size="22" font-weight="700">Backfill</text>
+  <text x="628" y="454" fill="#2D241B" font-family="Arial, sans-serif" font-size="18">BestEffort 补洞</text>
+  <text x="628" y="486" fill="#6B5B4B" font-family="Arial, sans-serif" font-size="17">处理无显式请求</text>
+  <text x="628" y="516" fill="#6B5B4B" font-family="Arial, sans-serif" font-size="17">的 Pod</text>
+
+  <rect x="840" y="380" width="250" height="180" rx="20" fill="#FBF4EA" stroke="#D8CAB3" stroke-width="2"/>
+  <text x="868" y="420" fill="#B4491F" font-family="Arial, sans-serif" font-size="22" font-weight="700">Preempt / Reclaim</text>
+  <text x="868" y="454" fill="#2D241B" font-family="Arial, sans-serif" font-size="18">同队列抢占 / 跨队列回收</text>
+  <text x="868" y="486" fill="#6B5B4B" font-family="Arial, sans-serif" font-size="17">gang 插件会约束可牺牲</text>
+  <text x="868" y="512" fill="#6B5B4B" font-family="Arial, sans-serif" font-size="17">受害者集合</text>
+
+  <rect x="430" y="604" width="340" height="68" rx="18" fill="#EFE3D1" stroke="#D8CAB3" stroke-width="2"/>
+  <text x="458" y="646" fill="#2D241B" font-family="Arial, sans-serif" font-size="20" font-weight="700">CloseSession() and flush changes</text>
+</svg>

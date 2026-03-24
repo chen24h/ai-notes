@@ -1,0 +1,41 @@
+<svg width="1200" height="760" viewBox="0 0 1200 760" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="760" rx="28" fill="#F6F1E7"/>
+  <rect x="48" y="48" width="1104" height="664" rx="24" fill="#FFFaf2" stroke="#D9CDBA" stroke-width="2"/>
+  <text x="78" y="104" fill="#2D241B" font-family="Georgia, serif" font-size="34" font-weight="700">Gang Plugin: What It Actually Registers</text>
+  <text x="78" y="142" fill="#6B5B4B" font-family="Arial, sans-serif" font-size="20">gang 不是单点判断，而是一组 session hooks：校验、排序、ready/pipelined 判定、preempt/reclaim 保护。</text>
+
+  <rect x="110" y="214" width="288" height="380" rx="22" fill="#FBF4EA" stroke="#D8CAB3" stroke-width="2"/>
+  <text x="138" y="256" fill="#B4491F" font-family="Arial, sans-serif" font-size="22" font-weight="700">Validation path</text>
+  <text x="138" y="294" fill="#2D241B" font-family="Arial, sans-serif" font-size="18">AddJobValidFn()</text>
+  <text x="138" y="328" fill="#6B5B4B" font-family="Arial, sans-serif" font-size="17">CheckTaskValid()</text>
+  <text x="138" y="356" fill="#6B5B4B" font-family="Arial, sans-serif" font-size="17">CheckSubJobValid()</text>
+  <text x="138" y="384" fill="#6B5B4B" font-family="Arial, sans-serif" font-size="17">ValidTaskNum() &gt;= MinAvailable</text>
+  <text x="138" y="430" fill="#2D241B" font-family="Arial, sans-serif" font-size="18">作用：</text>
+  <text x="138" y="462" fill="#6B5B4B" font-family="Arial, sans-serif" font-size="17">不满足 gang 条件的 Job</text>
+  <text x="138" y="490" fill="#6B5B4B" font-family="Arial, sans-serif" font-size="17">直接被 allocate 跳过</text>
+
+  <rect x="456" y="214" width="288" height="380" rx="22" fill="#FBF4EA" stroke="#D8CAB3" stroke-width="2"/>
+  <text x="484" y="256" fill="#B4491F" font-family="Arial, sans-serif" font-size="22" font-weight="700">Ordering and phase</text>
+  <text x="484" y="294" fill="#2D241B" font-family="Arial, sans-serif" font-size="18">AddJobOrderFn()</text>
+  <text x="484" y="326" fill="#6B5B4B" font-family="Arial, sans-serif" font-size="17">ready 的 Job 优先</text>
+  <text x="484" y="362" fill="#2D241B" font-family="Arial, sans-serif" font-size="18">AddJobReadyFn()</text>
+  <text x="484" y="390" fill="#6B5B4B" font-family="Arial, sans-serif" font-size="17">CheckTaskReady() &amp;&amp; IsReady()</text>
+  <text x="484" y="426" fill="#2D241B" font-family="Arial, sans-serif" font-size="18">AddJobPipelinedFn()</text>
+  <text x="484" y="454" fill="#6B5B4B" font-family="Arial, sans-serif" font-size="17">CheckTaskPipelined() &amp;&amp; IsPipelined()</text>
+  <text x="484" y="500" fill="#2D241B" font-family="Arial, sans-serif" font-size="18">作用：</text>
+  <text x="484" y="532" fill="#6B5B4B" font-family="Arial, sans-serif" font-size="17">决定 Job 在队列里的优先级</text>
+  <text x="484" y="560" fill="#6B5B4B" font-family="Arial, sans-serif" font-size="17">以及是否进入 ready / pipelined</text>
+
+  <rect x="802" y="214" width="288" height="380" rx="22" fill="#FBF4EA" stroke="#D8CAB3" stroke-width="2"/>
+  <text x="830" y="256" fill="#B4491F" font-family="Arial, sans-serif" font-size="22" font-weight="700">Preempt / Reclaim</text>
+  <text x="830" y="294" fill="#2D241B" font-family="Arial, sans-serif" font-size="18">AddPreemptableFn()</text>
+  <text x="830" y="326" fill="#2D241B" font-family="Arial, sans-serif" font-size="18">AddReclaimableFn()</text>
+  <text x="830" y="362" fill="#6B5B4B" font-family="Arial, sans-serif" font-size="17">只允许牺牲后仍满足</text>
+  <text x="830" y="390" fill="#6B5B4B" font-family="Arial, sans-serif" font-size="17">ReadyTaskNum &gt; MinAvailable</text>
+  <text x="830" y="436" fill="#2D241B" font-family="Arial, sans-serif" font-size="18">作用：</text>
+  <text x="830" y="468" fill="#6B5B4B" font-family="Arial, sans-serif" font-size="17">避免为了满足新 Job</text>
+  <text x="830" y="496" fill="#6B5B4B" font-family="Arial, sans-serif" font-size="17">把已有 gang 拆散</text>
+
+  <rect x="264" y="634" width="672" height="42" rx="14" fill="#EFE3D1"/>
+  <text x="294" y="661" fill="#2D241B" font-family="Arial, sans-serif" font-size="18">一句话：gang 插件不是“单次判定能不能调度”，而是在整个调度生命周期里持续维护 all-or-nothing 约束。</text>
+</svg>
