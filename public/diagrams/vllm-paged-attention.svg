@@ -1,0 +1,68 @@
+<svg width="1200" height="760" viewBox="0 0 1200 760" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="760" rx="28" fill="#F6F1E7"/>
+  <rect x="48" y="48" width="1104" height="664" rx="24" fill="#FFFaf2" stroke="#D9CDBA" stroke-width="2"/>
+
+  <text x="78" y="105" fill="#2D241B" font-family="Georgia, serif" font-size="36" font-weight="700">vLLM: PagedAttention + Continuous Batching</text>
+  <text x="78" y="142" fill="#6B5B4B" font-family="Arial, sans-serif" font-size="20">核心直觉：把动态增长的 KV cache 做成分页管理，再把动态请求持续编入执行流。</text>
+
+  <rect x="78" y="190" width="460" height="458" rx="20" fill="#FBF4EA" stroke="#D8CAB3" stroke-width="2"/>
+  <text x="104" y="232" fill="#B4491F" font-family="Arial, sans-serif" font-size="20" font-weight="700">传统连续大块分配</text>
+  <text x="104" y="264" fill="#6B5B4B" font-family="Arial, sans-serif" font-size="18">请求长度不同，KV cache 容易碎片化；batch 一波动，显存利用率就抖。</text>
+
+  <rect x="108" y="308" width="140" height="220" rx="16" fill="#E6D5C1"/>
+  <rect x="108" y="308" width="140" height="80" rx="16" fill="#C85B2C"/>
+  <text x="130" y="354" fill="#FFF" font-family="Arial, sans-serif" font-size="22" font-weight="700">Req A</text>
+  <text x="130" y="456" fill="#7A6B5D" font-family="Arial, sans-serif" font-size="20">空洞</text>
+
+  <rect x="268" y="308" width="110" height="220" rx="16" fill="#E6D5C1"/>
+  <rect x="268" y="308" width="110" height="140" rx="16" fill="#D88E2F"/>
+  <text x="286" y="382" fill="#FFF" font-family="Arial, sans-serif" font-size="22" font-weight="700">Req B</text>
+  <text x="286" y="486" fill="#7A6B5D" font-family="Arial, sans-serif" font-size="20">空洞</text>
+
+  <rect x="398" y="308" width="110" height="220" rx="16" fill="#E6D5C1"/>
+  <rect x="398" y="308" width="110" height="110" rx="16" fill="#8C6DD7"/>
+  <text x="416" y="368" fill="#FFF" font-family="Arial, sans-serif" font-size="22" font-weight="700">Req C</text>
+  <text x="416" y="486" fill="#7A6B5D" font-family="Arial, sans-serif" font-size="20">空洞</text>
+
+  <text x="104" y="580" fill="#2D241B" font-family="Arial, sans-serif" font-size="18">问题：请求生命周期不齐，连续内存难复用，浪费显存并限制 batch size。</text>
+
+  <rect x="584" y="190" width="538" height="458" rx="20" fill="#FBF4EA" stroke="#D8CAB3" stroke-width="2"/>
+  <text x="610" y="232" fill="#B4491F" font-family="Arial, sans-serif" font-size="20" font-weight="700">vLLM 的分页式 KV cache</text>
+  <text x="610" y="264" fill="#6B5B4B" font-family="Arial, sans-serif" font-size="18">把每个请求拆成 block，按需映射与复用，更适合动态 workload。</text>
+
+  <rect x="614" y="304" width="470" height="244" rx="18" fill="#F0E5D5" stroke="#D8CAB3" stroke-width="2"/>
+  <g font-family="Arial, sans-serif" font-size="16" fill="#2D241B">
+    <text x="636" y="330">Physical KV blocks</text>
+  </g>
+
+  <g>
+    <rect x="638" y="350" width="92" height="54" rx="10" fill="#C85B2C"/>
+    <rect x="746" y="350" width="92" height="54" rx="10" fill="#D88E2F"/>
+    <rect x="854" y="350" width="92" height="54" rx="10" fill="#8C6DD7"/>
+    <rect x="962" y="350" width="92" height="54" rx="10" fill="#4D8F77"/>
+
+    <rect x="638" y="420" width="92" height="54" rx="10" fill="#8C6DD7"/>
+    <rect x="746" y="420" width="92" height="54" rx="10" fill="#C85B2C"/>
+    <rect x="854" y="420" width="92" height="54" rx="10" fill="#4D8F77"/>
+    <rect x="962" y="420" width="92" height="54" rx="10" fill="#D88E2F"/>
+  </g>
+
+  <g font-family="Arial, sans-serif" font-size="18" font-weight="700" fill="#FFF">
+    <text x="665" y="384">A1</text>
+    <text x="773" y="384">B1</text>
+    <text x="881" y="384">C1</text>
+    <text x="989" y="384">D1</text>
+    <text x="665" y="454">C2</text>
+    <text x="773" y="454">A2</text>
+    <text x="989" y="454">B2</text>
+  </g>
+
+  <g font-family="Arial, sans-serif" font-size="17" fill="#2D241B">
+    <text x="636" y="580">Request A/B/C 各自维护逻辑映射表，而不是强依赖连续物理内存。</text>
+  </g>
+
+  <rect x="614" y="586" width="470" height="40" rx="12" fill="#EFE3D1"/>
+  <text x="632" y="612" fill="#2D241B" font-family="Arial, sans-serif" font-size="18">Continuous batching：新请求持续加入，已完成请求及时退出，GPU 不必等整齐的一批任务。</text>
+
+  <text x="78" y="686" fill="#6B5B4B" font-family="Arial, sans-serif" font-size="18">示意图：左边强调连续大块分配带来的空洞；右边强调分页管理和动态调度更适合 LLM serving 的请求形状。</text>
+</svg>

@@ -78,6 +78,8 @@ facts:
 
 **vLLM 是一个围绕 KV cache 管理、请求调度和服务接口做深度优化的 LLM serving engine。**
 
+![vLLM official logo](https://raw.githubusercontent.com/vllm-project/vllm/main/docs/assets/logos/vllm-logo-text-light.png)
+
 它真正解决的问题，不是“模型能不能跑”，而是下面这些更接近工程现实的问题：
 
 - 多请求同时进来时，GPU 怎么尽量吃满
@@ -131,6 +133,10 @@ vLLM 的做法，本质上是让请求更持续地进入执行流，而不是僵
 - 更动态的请求调度
 
 这个视角比一句“它很快”更有信息量。因为“快”是结果，调度和内存组织方式才是原因。
+
+![PagedAttention and continuous batching schematic](https://chen24h.github.io/ai-notes/diagrams/vllm-paged-attention.svg)
+
+*图：自绘示意。左边是连续大块分配容易产生空洞，右边是 vLLM 更接近分页管理的思路，并配合 continuous batching 处理动态请求。*
 
 ### 3. 不只看 GPU，也盯 CPU 开销
 
@@ -190,6 +196,10 @@ vLLM 在这件事上做得很务实。
 - **平台层负责路由、伸缩、隔离、观测、限流、发布和故障处理**
 
 换句话说，vLLM 更像推理时代的高性能执行引擎，而不是完整的 control plane。
+
+![vLLM serving stack schematic](https://chen24h.github.io/ai-notes/diagrams/vllm-serving-stack.svg)
+
+*图：自绘示意。vLLM 更适合放在执行层；应用和平台治理能力通常在它上面。*
 
 这个定位很关键。因为一旦把它看成“万能平台”，期待就会错位；但如果把它看成一层执行引擎，很多事情就会非常顺：
 
