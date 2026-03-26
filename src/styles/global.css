@@ -354,28 +354,29 @@ a {
   width: 100%;
   margin: 1.4rem 0;
   border-collapse: collapse;
-  border: 1px solid var(--line);
+  border: 2px solid rgba(34, 26, 18, 0.22);
   background: var(--surface-strong);
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 0.96rem;
+  box-shadow: 0 8px 24px rgba(34, 26, 18, 0.04);
 }
 
 .prose :global(th),
 .prose :global(td) {
   padding: 0.9rem 1rem;
-  border: 1px solid var(--line);
+  border: 1px solid rgba(34, 26, 18, 0.18);
   text-align: left;
   vertical-align: top;
 }
 
 .prose :global(th) {
-  background: var(--accent-soft);
+  background: rgba(180, 73, 31, 0.16);
   color: var(--text);
   font-weight: 700;
 }
 
 .prose :global(tr:nth-child(even) td) {
-  background: rgba(255, 250, 242, 0.72);
+  background: rgba(247, 239, 226, 0.78);
 }
 
 .ledger {
