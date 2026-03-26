@@ -350,6 +350,34 @@ a {
   background: var(--surface-strong);
 }
 
+.prose :global(table) {
+  width: 100%;
+  margin: 1.4rem 0;
+  border-collapse: collapse;
+  border: 1px solid var(--line);
+  background: var(--surface-strong);
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 0.96rem;
+}
+
+.prose :global(th),
+.prose :global(td) {
+  padding: 0.9rem 1rem;
+  border: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+}
+
+.prose :global(th) {
+  background: var(--accent-soft);
+  color: var(--text);
+  font-weight: 700;
+}
+
+.prose :global(tr:nth-child(even) td) {
+  background: rgba(255, 250, 242, 0.72);
+}
+
 .ledger {
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
