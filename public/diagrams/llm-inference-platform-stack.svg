@@ -1,0 +1,26 @@
+<svg width="1200" height="760" viewBox="0 0 1200 760" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="760" rx="28" fill="#F6F1E7"/>
+  <rect x="48" y="48" width="1104" height="664" rx="24" fill="#FFFaf2" stroke="#D9CDBA" stroke-width="2"/>
+  <text x="78" y="104" fill="#2D241B" font-family="Georgia, serif" font-size="34" font-weight="700">LLM Inference Platform Stack</text>
+  <text x="78" y="142" fill="#6B5B4B" font-family="Arial, sans-serif" font-size="20">关键不是某个 serving engine，而是把接入、路由、执行、资源和控制面拼成一套能运营的系统。</text>
+
+  <rect x="116" y="200" width="968" height="78" rx="18" fill="#EFE3D1" stroke="#D8CAB3" stroke-width="2"/>
+  <text x="150" y="246" fill="#2D241B" font-family="Arial, sans-serif" font-size="22" font-weight="700">Application / API Layer</text>
+  <text x="510" y="246" fill="#6B5B4B" font-family="Arial, sans-serif" font-size="18">OpenAI-compatible API · SDK · Gateway · Auth</text>
+
+  <rect x="116" y="312" width="968" height="90" rx="18" fill="#F7EFE2" stroke="#D8CAB3" stroke-width="2"/>
+  <text x="150" y="360" fill="#2D241B" font-family="Arial, sans-serif" font-size="22" font-weight="700">Routing / Scheduling Layer</text>
+  <text x="440" y="360" fill="#6B5B4B" font-family="Arial, sans-serif" font-size="18">Model routing · tenant isolation · fallback · traffic policy</text>
+
+  <rect x="116" y="436" width="968" height="106" rx="18" fill="#2D241B"/>
+  <text x="150" y="484" fill="#FFFaf2" font-family="Arial, sans-serif" font-size="22" font-weight="700">Execution Layer</text>
+  <text x="320" y="484" fill="#F3E8DA" font-family="Arial, sans-serif" font-size="18">vLLM / SGLang / TensorRT-LLM / runtime backend</text>
+  <text x="320" y="516" fill="#F3E8DA" font-family="Arial, sans-serif" font-size="18">batching · KV cache · prefix cache · PD disaggregation · LoRA</text>
+
+  <rect x="116" y="576" width="468" height="88" rx="18" fill="#FBF4EA" stroke="#D8CAB3" stroke-width="2"/>
+  <rect x="616" y="576" width="468" height="88" rx="18" fill="#FBF4EA" stroke="#D8CAB3" stroke-width="2"/>
+  <text x="148" y="624" fill="#2D241B" font-family="Arial, sans-serif" font-size="22" font-weight="700">Resource Layer</text>
+  <text x="310" y="624" fill="#6B5B4B" font-family="Arial, sans-serif" font-size="18">GPU pools · topology · autoscaling</text>
+  <text x="648" y="624" fill="#2D241B" font-family="Arial, sans-serif" font-size="22" font-weight="700">Control Plane</text>
+  <text x="812" y="624" fill="#6B5B4B" font-family="Arial, sans-serif" font-size="18">release · quota · observability · cost</text>
+</svg>

@@ -1,0 +1,30 @@
+<svg width="1200" height="700" viewBox="0 0 1200 700" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="700" rx="28" fill="#F6F1E7"/>
+  <rect x="48" y="48" width="1104" height="604" rx="24" fill="#FFFaf2" stroke="#D9CDBA" stroke-width="2"/>
+  <text x="78" y="104" fill="#2D241B" font-family="Georgia, serif" font-size="34" font-weight="700">Three Typical Platform Shapes</text>
+  <text x="78" y="142" fill="#6B5B4B" font-family="Arial, sans-serif" font-size="20">不是所有团队都该一上来做终局平台；先把复杂度和真实瓶颈对齐。</text>
+
+  <rect x="96" y="222" width="292" height="320" rx="24" fill="#FBF4EA" stroke="#D8CAB3" stroke-width="2"/>
+  <text x="128" y="270" fill="#B4491F" font-family="Arial, sans-serif" font-size="22" font-weight="700">Lightweight</text>
+  <text x="128" y="316" fill="#2D241B" font-family="Arial, sans-serif" font-size="18">Single engine + simple gateway</text>
+  <text x="128" y="356" fill="#6B5B4B" font-family="Arial, sans-serif" font-size="17">目标：先跑起来</text>
+  <text x="128" y="386" fill="#6B5B4B" font-family="Arial, sans-serif" font-size="17">优点：最省工程</text>
+  <text x="128" y="416" fill="#6B5B4B" font-family="Arial, sans-serif" font-size="17">缺点：治理能力弱</text>
+
+  <rect x="454" y="186" width="292" height="356" rx="24" fill="#EFE3D1" stroke="#D8CAB3" stroke-width="2"/>
+  <text x="486" y="236" fill="#B4491F" font-family="Arial, sans-serif" font-size="22" font-weight="700">Platformized</text>
+  <text x="486" y="282" fill="#2D241B" font-family="Arial, sans-serif" font-size="18">Serving engine + K8s control plane</text>
+  <text x="486" y="322" fill="#6B5B4B" font-family="Arial, sans-serif" font-size="17">目标：团队复用</text>
+  <text x="486" y="352" fill="#6B5B4B" font-family="Arial, sans-serif" font-size="17">优点：扩展性更好</text>
+  <text x="486" y="382" fill="#6B5B4B" font-family="Arial, sans-serif" font-size="17">缺点：复杂度上升</text>
+
+  <rect x="812" y="150" width="292" height="392" rx="24" fill="#2D241B"/>
+  <text x="844" y="202" fill="#FFFaf2" font-family="Arial, sans-serif" font-size="22" font-weight="700">Heavyweight</text>
+  <text x="844" y="248" fill="#F3E8DA" font-family="Arial, sans-serif" font-size="18">Disaggregated serving + advanced routing</text>
+  <text x="844" y="288" fill="#F3E8DA" font-family="Arial, sans-serif" font-size="17">目标：性能 / 多租户 / 成本</text>
+  <text x="844" y="318" fill="#F3E8DA" font-family="Arial, sans-serif" font-size="17">优点：上限最高</text>
+  <text x="844" y="348" fill="#F3E8DA" font-family="Arial, sans-serif" font-size="17">缺点：最难做稳</text>
+
+  <path d="M388 382H454" stroke="#B4491F" stroke-width="4" stroke-linecap="round"/>
+  <path d="M746 346H812" stroke="#B4491F" stroke-width="4" stroke-linecap="round"/>
+</svg>
