@@ -1,0 +1,53 @@
+<svg width="1200" height="860" viewBox="0 0 1200 860" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="860" rx="28" fill="#F6F1E7"/>
+  <rect x="48" y="48" width="1104" height="764" rx="24" fill="#FFFaf2" stroke="#D9CDBA" stroke-width="2"/>
+  <text x="78" y="104" fill="#2D241B" font-family="Georgia, serif" font-size="34" font-weight="700">TP / DP / PP / EP Cheat Sheet</text>
+  <text x="78" y="142" fill="#6B5B4B" font-family="Arial, sans-serif" font-size="20">先别背术语，先看每种并行到底切的是哪一维、用什么通信、解决什么瓶颈。</text>
+
+  <rect x="80" y="188" width="180" height="64" rx="14" fill="#EFE3D1"/>
+  <rect x="260" y="188" width="240" height="64" rx="14" fill="#EFE3D1"/>
+  <rect x="500" y="188" width="210" height="64" rx="14" fill="#EFE3D1"/>
+  <rect x="710" y="188" width="180" height="64" rx="14" fill="#EFE3D1"/>
+  <rect x="890" y="188" width="230" height="64" rx="14" fill="#EFE3D1"/>
+  <g fill="#2D241B" font-family="Arial, sans-serif" font-size="20" font-weight="700">
+    <text x="116" y="228">并行类型</text>
+    <text x="314" y="228">切分对象</text>
+    <text x="548" y="228">典型通信</text>
+    <text x="760" y="228">优点</text>
+    <text x="944" y="228">代价 / 适用边界</text>
+  </g>
+
+  <g font-family="Arial, sans-serif" font-size="18">
+    <rect x="80" y="278" width="1040" height="110" rx="18" fill="#FBF4EA" stroke="#D8CAB3" stroke-width="2"/>
+    <text x="112" y="326" fill="#B4491F" font-weight="700">DP</text>
+    <text x="176" y="326" fill="#2D241B">复制整份模型，切 batch</text>
+    <text x="518" y="326" fill="#2D241B">All-reduce / Reduce-scatter / All-gather</text>
+    <text x="760" y="326" fill="#2D241B">实现最直接，吞吐扩展最好</text>
+    <text x="920" y="314" fill="#6B5B4B">模型参数默认复制；</text>
+    <text x="920" y="340" fill="#6B5B4B">显存压力大时要靠 ZeRO / FSDP</text>
+
+    <rect x="80" y="406" width="1040" height="110" rx="18" fill="#FBF4EA" stroke="#D8CAB3" stroke-width="2"/>
+    <text x="112" y="454" fill="#B4491F" font-weight="700">TP</text>
+    <text x="176" y="454" fill="#2D241B">切单层里的张量 / 权重矩阵</text>
+    <text x="518" y="454" fill="#2D241B">层内 All-reduce / All-gather</text>
+    <text x="760" y="454" fill="#2D241B">解决“大层塞不进单卡”</text>
+    <text x="920" y="442" fill="#6B5B4B">层内通信频繁；</text>
+    <text x="920" y="468" fill="#6B5B4B">更适合 NVLink / NVSwitch 域内</text>
+
+    <rect x="80" y="534" width="1040" height="110" rx="18" fill="#FBF4EA" stroke="#D8CAB3" stroke-width="2"/>
+    <text x="112" y="582" fill="#B4491F" font-weight="700">PP</text>
+    <text x="176" y="582" fill="#2D241B">按层深切模型</text>
+    <text x="518" y="582" fill="#2D241B">Stage 间激活 / 梯度传递</text>
+    <text x="760" y="582" fill="#2D241B">把深模型分摊到更多 GPU</text>
+    <text x="920" y="570" fill="#6B5B4B">会有 pipeline bubble；</text>
+    <text x="920" y="596" fill="#6B5B4B">要靠 micro-batch 和 interleaving 抑制</text>
+
+    <rect x="80" y="662" width="1040" height="110" rx="18" fill="#FBF4EA" stroke="#D8CAB3" stroke-width="2"/>
+    <text x="112" y="710" fill="#B4491F" font-weight="700">EP</text>
+    <text x="176" y="710" fill="#2D241B">只切 MoE experts</text>
+    <text x="518" y="710" fill="#2D241B">Token dispatch / All-to-all</text>
+    <text x="760" y="710" fill="#2D241B">让 expert 数量扩起来</text>
+    <text x="920" y="698" fill="#6B5B4B">只适用于 MoE；</text>
+    <text x="920" y="724" fill="#6B5B4B">路由倾斜会带来负载不均</text>
+  </g>
+</svg>

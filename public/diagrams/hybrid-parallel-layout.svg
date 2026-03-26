@@ -1,0 +1,40 @@
+<svg width="1200" height="760" viewBox="0 0 1200 760" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="760" rx="28" fill="#F6F1E7"/>
+  <rect x="48" y="48" width="1104" height="664" rx="24" fill="#FFFaf2" stroke="#D9CDBA" stroke-width="2"/>
+  <text x="78" y="104" fill="#2D241B" font-family="Georgia, serif" font-size="34" font-weight="700">How Hybrid Parallelism Composes</text>
+  <text x="78" y="142" fill="#6B5B4B" font-family="Arial, sans-serif" font-size="20">常见组合不是四选一，而是多维相乘：世界大小 = TP × PP × EP × DP（若再加 CP，还要继续乘）。</text>
+
+  <rect x="88" y="196" width="470" height="420" rx="24" fill="#FBF4EA" stroke="#D8CAB3" stroke-width="2"/>
+  <text x="116" y="240" fill="#B4491F" font-family="Arial, sans-serif" font-size="22" font-weight="700">单个 PP stage 内部</text>
+  <text x="116" y="274" fill="#2D241B" font-family="Arial, sans-serif" font-size="18">先看横向：同一层内部再做 TP / EP</text>
+
+  <rect x="132" y="320" width="180" height="210" rx="18" fill="#D88E2F"/>
+  <rect x="324" y="320" width="180" height="210" rx="18" fill="#8C6DD7"/>
+  <text x="172" y="430" fill="#FFF" font-family="Arial, sans-serif" font-size="22" font-weight="700">TP Rank 0</text>
+  <text x="364" y="430" fill="#FFF" font-family="Arial, sans-serif" font-size="22" font-weight="700">TP Rank 1</text>
+  <text x="154" y="470" fill="#FFFaf2" font-family="Arial, sans-serif" font-size="18">切单层矩阵</text>
+  <text x="346" y="470" fill="#FFFaf2" font-family="Arial, sans-serif" font-size="18">层内同步</text>
+
+  <rect x="642" y="196" width="470" height="420" rx="24" fill="#FBF4EA" stroke="#D8CAB3" stroke-width="2"/>
+  <text x="670" y="240" fill="#B4491F" font-family="Arial, sans-serif" font-size="22" font-weight="700">纵向看整机组</text>
+  <text x="670" y="274" fill="#2D241B" font-family="Arial, sans-serif" font-size="18">PP 先把层切开，DP 再复制一整套并行拓扑</text>
+
+  <rect x="680" y="320" width="160" height="88" rx="16" fill="#C85B2C"/>
+  <rect x="860" y="320" width="160" height="88" rx="16" fill="#C85B2C"/>
+  <rect x="680" y="438" width="160" height="88" rx="16" fill="#4D8F77"/>
+  <rect x="860" y="438" width="160" height="88" rx="16" fill="#4D8F77"/>
+  <g fill="#FFF" font-family="Arial, sans-serif" font-size="20" font-weight="700">
+    <text x="714" y="372">PP0 / DP0</text>
+    <text x="894" y="372">PP1 / DP0</text>
+    <text x="714" y="490">PP0 / DP1</text>
+    <text x="894" y="490">PP1 / DP1</text>
+  </g>
+
+  <path d="M840 364H860" stroke="#2D241B" stroke-width="4" stroke-linecap="round"/>
+  <path d="M840 482H860" stroke="#2D241B" stroke-width="4" stroke-linecap="round"/>
+  <path d="M760 408V438" stroke="#2D241B" stroke-width="4" stroke-linecap="round"/>
+  <path d="M940 408V438" stroke="#2D241B" stroke-width="4" stroke-linecap="round"/>
+
+  <rect x="190" y="654" width="820" height="40" rx="14" fill="#EFE3D1"/>
+  <text x="214" y="681" fill="#2D241B" font-family="Arial, sans-serif" font-size="18">读法：TP / EP 解决“单层太大 or experts 太多”，PP 解决“整模型太深”，DP 解决“吞吐扩不起来”。</text>
+</svg>
