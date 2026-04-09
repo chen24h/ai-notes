@@ -26,10 +26,10 @@ facts:
     boundary: "本站仅做格式化转载，不对原文内所有二级引用做额外背书。"
 ---
 
-<blockquote>
+<div class="callout reprint-note">
 <p><strong>转载声明</strong>：本文转载自 <strong>程序猿李巡天</strong> 发布于 <strong>AtomGit 开源社区</strong> 的文章，仅做版式整理与图片本地化处理，版权归原作者所有。</p>
 <p>原文链接：<a href="https://gitcode.csdn.net/69c4cf0954b52172bc64aada.html">https://gitcode.csdn.net/69c4cf0954b52172bc64aada.html</a></p>
-</blockquote>
+</div>
 <blockquote>
 <p><strong>导读</strong>：2025年是Agent的元年，而2026年将是Agent Harness的爆发之年。为什么OpenAI、Anthropic等顶级AI公司都在疯狂投入Harness Engineering？为什么说不掌握Harness，你的Agent永远只能是个"玩具"？本文将从架构师视角，深度解析Agent Harness的底层原理、核心组件和实战应用。</p>
 </blockquote>

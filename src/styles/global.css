@@ -324,6 +324,14 @@ a {
   background: var(--accent-soft);
 }
 
+.reprint-note p {
+  margin: 0;
+}
+
+.reprint-note p + p {
+  margin-top: 0.55rem;
+}
+
 .prose h2,
 .prose h3 {
   margin-top: 1.8rem;
