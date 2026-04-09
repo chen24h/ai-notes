@@ -10,18 +10,44 @@ interface Props {
 }
 
 const { headings } = Astro.props;
+const groups = headings.reduce(
+  (acc, heading) => {
+    if (heading.level === 4 && acc.length > 0) {
+      acc[acc.length - 1].children.push(heading);
+      return acc;
+    }
+
+    acc.push({ ...heading, children: [] as HeadingItem[] });
+    return acc;
+  },
+  [] as Array<HeadingItem & { children: HeadingItem[] }>,
+);
 ---
 
-{headings.length > 0 ? (
+{groups.length > 0 ? (
   <aside class="toc-panel panel" aria-label="Table of contents">
     <p class="eyebrow">On This Page</p>
     <nav class="toc-nav">
       <ol class="toc-list">
-        {headings.map((heading) => (
-          <li class={`toc-item toc-level-${heading.level}`}>
+        {groups.map((heading) => (
+          <li
+            class={`toc-item toc-level-${heading.level}`}
+            data-toc-group={heading.id}
+          >
             <a href={`#${heading.id}`} data-toc-link={heading.id}>
               {heading.text}
             </a>
+            {heading.children.length > 0 ? (
+              <ol class="toc-children">
+                {heading.children.map((child) => (
+                  <li class={`toc-item toc-level-${child.level}`}>
+                    <a href={`#${child.id}`} data-toc-link={child.id}>
+                      {child.text}
+                    </a>
+                  </li>
+                ))}
+              </ol>
+            ) : null}
           </li>
         ))}
       </ol>
@@ -52,6 +78,9 @@ const { headings } = Astro.props;
       const links = Array.from(
         tocRoot.querySelectorAll("[data-toc-link]"),
       );
+      const groups = Array.from(
+        tocRoot.querySelectorAll("[data-toc-group]"),
+      );
 
       const setActive = (id) => {
         links.forEach((link) => {
@@ -63,6 +92,11 @@ const { headings } = Astro.props;
             link.removeAttribute("aria-current");
           }
         });
+
+        groups.forEach((group) => group.classList.remove("is-expanded"));
+        const activeLink = tocRoot.querySelector(`[data-toc-link="${id}"]`);
+        const activeGroup = activeLink?.closest("[data-toc-group]");
+        if (activeGroup) activeGroup.classList.add("is-expanded");
       };
 
       if (headingNodes[0]?.id) setActive(headingNodes[0].id);

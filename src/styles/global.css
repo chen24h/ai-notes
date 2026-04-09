@@ -391,8 +391,19 @@ a {
   background: rgba(180, 73, 31, 0.1);
 }
 
-.toc-level-3 a {
+.toc-level-3 > a {
   padding-left: 1rem;
+}
+
+.toc-children {
+  display: none;
+  margin: 0.2rem 0 0.15rem;
+  padding: 0 0 0 0.35rem;
+  list-style: none;
+}
+
+.toc-item.is-expanded > .toc-children {
+  display: block;
 }
 
 .toc-level-4 a {
