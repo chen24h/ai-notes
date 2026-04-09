@@ -324,24 +324,24 @@ a {
   background: var(--accent-soft);
 }
 
-.prose :global(h2),
-.prose :global(h3) {
+.prose h2,
+.prose h3 {
   margin-top: 1.8rem;
   margin-bottom: 0.8rem;
 }
 
-.prose :global(p),
-.prose :global(li),
-.prose :global(blockquote) {
+.prose p,
+.prose li,
+.prose blockquote {
   line-height: 1.85;
 }
 
-.prose :global(code) {
+.prose code {
   padding: 0.1rem 0.3rem;
   background: var(--surface-strong);
 }
 
-.prose :global(pre) {
+.prose pre {
   margin: 1.3rem 0;
   padding: 1rem 1.05rem;
   overflow-x: auto;
@@ -351,7 +351,7 @@ a {
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.45);
 }
 
-.prose :global(pre code) {
+.prose pre code {
   display: block;
   padding: 0;
   background: transparent;
@@ -361,7 +361,7 @@ a {
   line-height: 1.65;
 }
 
-.prose :global(img) {
+.prose img {
   display: block;
   width: 100%;
   max-width: 100%;
@@ -372,7 +372,7 @@ a {
   background: var(--surface-strong);
 }
 
-.prose :global(table) {
+.prose table {
   width: 100%;
   margin: 1.4rem 0;
   border-collapse: collapse;
@@ -383,21 +383,21 @@ a {
   box-shadow: 0 8px 24px rgba(34, 26, 18, 0.06);
 }
 
-.prose :global(th),
-.prose :global(td) {
+.prose th,
+.prose td {
   padding: 0.9rem 1rem;
   border: 1px solid rgba(34, 26, 18, 0.34);
   text-align: left;
   vertical-align: top;
 }
 
-.prose :global(th) {
+.prose th {
   background: rgba(180, 73, 31, 0.16);
   color: var(--text);
   font-weight: 700;
 }
 
-.prose :global(tr:nth-child(even) td) {
+.prose tr:nth-child(even) td {
   background: rgba(247, 239, 226, 0.78);
 }
 
