@@ -54,10 +54,14 @@ facts:
 <h4><strong>1.3 Harness的价值主张</strong></h4>
 <p><strong>Agent Harness就是解决这些问题的"操作系统"</strong>。</p>
 <p>正如Philipp Schmid在《The importance of Agent Harness in 2026》中的经典比喻：</p>
-<pre><code class="language-text">- 模型 = CPU：提供原始算力
+
+~~~text
+- 模型 = CPU：提供原始算力
 - 上下文窗口 = RAM：有限的易失性工作内存
 - Agent Harness = 操作系统：管理上下文、提供驱动、调度资源
-- Agent = 应用程序：运行业务逻辑</code></pre>
+- Agent = 应用程序：运行业务逻辑
+~~~
+
 <p>没有操作系统，CPU再强也无法运行应用。同理，没有Harness，模型再智能也无法完成长期复杂任务。</p>
 <hr/>
 <h3>二、核心定义：Agent Harness到底是什么？</h3>
@@ -142,14 +146,18 @@ facts:
 <li><strong>协作表面</strong>：多个Agent和人类可以通过共享文件协作</li>
 </ol>
 <p><strong>实践建议</strong>：</p>
-<pre><code class="language-text"># 典型的 Harness 文件系统结构
+
+~~~text
+# 典型的 Harness 文件系统结构
 project/
 ├── AGENTS.md      # Agent 指令文件（持续学习）
 ├── PLAN.md        # 任务计划
 ├── PROGRESS.json  # 进度追踪
 ├── src/           # 源代码
 ├── tests/         # 测试文件
-└── .git/          # 版本控制</code></pre>
+└── .git/          # 版本控制
+~~~
+
 <p><strong>AGENTS.md模式</strong>：这是Harness Engineering的关键实践。每当发现一个Agent失败模式，就在此文件中添加一条规则。文件会随时间增长，形成组织的Agent知识库。</p>
 <h4><strong>3.2 Bash + 代码执行：通用问题解决器</strong></h4>
 <p><strong>核心理念</strong>：与其为每个可能的动作预定义工具，不如给Agent一个通用工具——Bash。</p>
@@ -160,8 +168,10 @@ project/
 <li>• <strong>生态</strong>：可以调用现有CLI工具、脚本和程序</li>
 </ul>
 <p><strong>Harness实现示例</strong>：</p>
-<pre><code class="language-python">class AgentHarness:
-    def execute_bash(self, command: str) -&gt; str:
+
+~~~python
+class AgentHarness:
+    def execute_bash(self, command: str) -> str:
         # 1. 验证命令（安全策略）
         if not self._is_allowed(command):
             raise SecurityError("Command not allowed")
@@ -170,7 +180,9 @@ project/
         result = self.sandbox.run(command)
 
         # 3. 清理输出并返回
-        return self._sanitize_output(result)</code></pre>
+        return self._sanitize_output(result)
+~~~
+
 <p><strong>安全注意事项</strong>：</p>
 <ul>
 <li>• 必须在<strong>沙箱环境</strong>中执行</li>
@@ -190,7 +202,9 @@ project/
 <li>• 可扩展到大规模并行执行</li>
 </ul>
 <p><strong>架构示意图</strong>：</p>
-<pre><code class="language-text">┌─────────────────────────────────────┐
+
+~~~text
+┌─────────────────────────────────────┐
 │          Agent Harness             │
 │  ┌──────────────────────────────┐  │
 │  │  Tool Call Interceptor       │  │
@@ -211,7 +225,9 @@ project/
      │ - Node.js 20   │
      │ - Git          │
      │ - Chrome       │
-     └────────────────┘</code></pre>
+     └────────────────┘
+~~~
+
 <p><strong>主流沙箱方案</strong>：</p>
 <ul>
 <li>• Docker容器</li>
@@ -232,7 +248,9 @@ project/
 <li><strong>MCP（Model Context Protocol）服务器</strong>：标准化上下文访问</li>
 </ol>
 <p><strong>工具注册表模式</strong>：</p>
-<pre><code class="language-python">class ToolRegistry:
+
+~~~python
+class ToolRegistry:
     def __init__(self):
         self.tools = {
             "read_file": ReadFileTool(),
@@ -247,13 +265,21 @@ project/
         # 验证参数
         tool.validate(args)
         # 执行
-        return tool.run(args)</code></pre>
+        return tool.run(args)
+~~~
+
 <p><strong>实战案例：Firecrawl集成</strong></p>
 <p>Firecrawl是一个优秀的Web数据获取工具，完美解决了现代网页抓取的复杂性（JavaScript渲染、反机器人、动态内容）。</p>
-<pre><code class="language-bash"># 一键安装并集成到所有主流 Agent Harness
-npx -y firecrawl-cli@latest init --all --browser</code></pre>
+
+~~~bash
+# 一键安装并集成到所有主流 Agent Harness
+npx -y firecrawl-cli@latest init --all --browser
+~~~
+
 <p>安装后，Agent可以直接使用：</p>
-<pre><code class="language-python">def web_search(query: str) -&gt; list:
+
+~~~python
+def web_search(query: str) -> list:
     """搜索并返回结构化数据"""
     return firecrawl.search(
         query,
@@ -262,9 +288,11 @@ npx -y firecrawl-cli@latest init --all --browser</code></pre>
     )
 
 
-def fetch_page(url: str) -&gt; str:
+def fetch_page(url: str) -> str:
     """抓取网页并返回 Markdown"""
-    return firecrawl.scrape(url, formats=["markdown"]).markdown</code></pre>
+    return firecrawl.scrape(url, formats=["markdown"]).markdown
+~~~
+
 <p>Harness会将这些函数注册到工具注册表，Agent就可以像调用本地函数一样使用它们。</p>
 <h4><strong>3.5 内存与搜索（Memory &amp; Search）：持续学习系统</strong></h4>
 <p><strong>内存的三层架构</strong>：</p>
@@ -285,7 +313,9 @@ def fetch_page(url: str) -&gt; str:
 </ul>
 <p><strong>记忆文件格式</strong>：</p>
 <p>Anthropic实验发现，<strong>JSON比Markdown更适合状态追踪</strong>，因为模型不太可能意外覆盖或重新格式化JSON。</p>
-<pre><code class="language-json">{
+
+~~~json
+{
   "project": "Claude.ai Clone",
   "features": [
     {
@@ -305,7 +335,9 @@ def fetch_page(url: str) -&gt; str:
     "Use NextAuth for authentication",
     "Avoid using useEffect for chat polling"
   ]
-}</code></pre>
+}
+~~~
+
 <p><strong>RAG（检索增强生成）模式</strong>：</p>
 <p>Harness不应一次性加载所有知识，而应根据当前步骤<strong>按需检索</strong>相关文档，避免上下文污染。</p>
 <h4><strong>3.6 上下文工程（Context Engineering）：对抗Context Rot</strong></h4>
@@ -319,7 +351,9 @@ def fetch_page(url: str) -&gt; str:
 <li>• 保留关键决策和结果</li>
 <li>• 丢弃中间推理步骤</li>
 </ul>
-<pre><code class="language-python">def compact_context(self):
+
+~~~python
+def compact_context(self):
     """压缩上下文的策略"""
     # 1. 提取关键信息
     summary = self.llm.summarize(
@@ -334,7 +368,9 @@ def fetch_page(url: str) -&gt; str:
     self.context.rebuild(
         prefix=summary,
         recent=recent,
-    )</code></pre>
+    )
+~~~
+
 <p><strong>2. 工具输出卸载（Tool Call Offloading）</strong></p>
 <p>大型工具输出会噪音般充斥上下文窗口。Harness应：</p>
 <ul>
@@ -354,7 +390,9 @@ def fetch_page(url: str) -&gt; str:
 <p><strong>核心原则</strong>：生产级Harness必须验证输出，而非盲目信任Agent。</p>
 <p><strong>验证机制</strong>：</p>
 <p><strong>1. 自验证循环（Self-Verification Loop）</strong></p>
-<pre><code class="language-python">def execute_with_verification(self, task: Task):
+
+~~~python
+def execute_with_verification(self, task: Task):
     # 1. Agent 执行
     result = self.agent.execute(task)
 
@@ -368,11 +406,15 @@ def fetch_page(url: str) -&gt; str:
         self.context.inject(error_msg)
         return self.execute_with_verification(task)
 
-    return result</code></pre>
+    return result
+~~~
+
 <p><strong>2. Ralph Loops（持续工作循环）</strong></p>
 <p>这是LangChain提出的一种模式：</p>
 <p>当Agent尝试退出时，Harness通过钩子拦截，并在干净的上下文窗口中重新注入原始提示，强制Agent继续工作直到完成目标。</p>
-<pre><code class="language-python">def ralph_loop(self):
+
+~~~python
+def ralph_loop(self):
     """Ralph Loop 实现长周期任务"""
     while not self.is_complete():
         # 1. 加载当前状态
@@ -387,31 +429,41 @@ def fetch_page(url: str) -&gt; str:
 
         # 4. 检查是否完成
         if self.verify_completion(result):
-            break</code></pre>
+            break
+~~~
+
 <p><strong>3. 人类介入（Human-in-the-Loop）</strong></p>
 <p>对于敏感操作（生产数据库写入、外部通信），Harness应暂停并等待人类批准。</p>
-<pre><code class="language-python">def execute_sensitive_action(self, action: str):
+
+~~~python
+def execute_sensitive_action(self, action: str):
     # 暂停并请求批准
     approval = self.human_approval(action)
 
     if approval.granted:
         return self.execute(action)
 
-    raise PermissionError("Action denied by human reviewer")</code></pre>
+    raise PermissionError("Action denied by human reviewer")
+~~~
+
 <hr/>
 <h3>四、架构模式：三种主流Harness设计范式</h3>
 <p>根据任务复杂度和需求，Harness有三种主流架构模式。</p>
 <h4><strong>4.1 单代理监督者（Single-Agent Supervisor）</strong></h4>
 <p><strong>适用场景</strong>：边界明确的任务（如客服机器人、数据录入）</p>
 <p><strong>架构</strong>：</p>
-<pre><code class="language-text">┌─────────────────────────────────┐
+
+~~~text
+┌─────────────────────────────────┐
 │            Harness              │
 │  ┌───────────────────────────┐  │
 │  │  Agent (LLM + Tools)      │  │
 │  └───────────────────────────┘  │
 │         │         │             │
 │      Memory      Tools          │
-└─────────────────────────────────┘</code></pre>
+└─────────────────────────────────┘
+~~~
+
 <p><strong>特点</strong>：</p>
 <ul>
 <li>• 一个模型在循环中</li>
@@ -423,7 +475,9 @@ def fetch_page(url: str) -&gt; str:
 <p><strong>这是Anthropic推荐的模式</strong>。</p>
 <p><strong>两阶段架构</strong>：</p>
 <p><strong>阶段一：初始化器（运行一次）</strong></p>
-<pre><code class="language-python">def initializer():
+
+~~~python
+def initializer():
     """设置持久化项目环境"""
     # 1. 创建目录结构
     fs.create_structure([
@@ -445,9 +499,13 @@ def fetch_page(url: str) -&gt; str:
     """)
 
     # 4. 初始 Git 提交
-    git.commit("Initial setup")</code></pre>
+    git.commit("Initial setup")
+~~~
+
 <p><strong>阶段二：执行器（多次运行）</strong></p>
-<pre><code class="language-python">def executor():
+
+~~~python
+def executor():
     """增量完成单个任务"""
     # 1. 读取进度
     state = fs.read("FEATURES.json")
@@ -462,7 +520,9 @@ def fetch_page(url: str) -&gt; str:
     # 4. 提交并更新进度
     git.commit(f"Complete {next_task}")
     state.mark_completed(next_task)
-    fs.write("FEATURES.json", state)</code></pre>
+    fs.write("FEATURES.json", state)
+~~~
+
 <p><strong>关键优势</strong>：</p>
 <ul>
 <li>• 每个会话从持久化状态启动</li>
@@ -472,7 +532,9 @@ def fetch_page(url: str) -&gt; str:
 <h4><strong>4.3 多代理协调（Multi-Agent Coordination）</strong></h4>
 <p><strong>适用场景</strong>：超复杂项目、需要专业分工</p>
 <p><strong>架构</strong>：</p>
-<pre><code class="language-text">┌─────────────────────────────────────┐
+
+~~~text
+┌─────────────────────────────────────┐
 │       Harness Orchestrator          │
 │  ┌─────────┐      ┌─────────┐       │
 │  │Research │      │ Writer  │       │
@@ -482,7 +544,9 @@ def fetch_page(url: str) -&gt; str:
 │  ┌─────────────────────────────┐    │
 │  │       Reviewer Agent        │    │
 │  └─────────────────────────────┘    │
-└─────────────────────────────────────┘</code></pre>
+└─────────────────────────────────────┘
+~~~
+
 <p><strong>Harness职责</strong>：</p>
 <ul>
 <li>• 分派专业代理（研究员、写作者、审核员）</li>
@@ -502,14 +566,18 @@ def fetch_page(url: str) -&gt; str:
 <h4><strong>5.2 两大核心实践</strong></h4>
 <p><strong>实践一：渐进式规则文件</strong></p>
 <p>维护一个<code>AGENTS.md</code>文件，每条规则对应一个观察到的失败：</p>
-<pre><code class="language-markdown"># AGENTS.md
+
+~~~markdown
+# AGENTS.md
 ## Rules (accumulated from failures)
 1. Always run tests after writing code
 2. Use `firecrawl scrape` for web data, not curl
 3. Check for existing functions before creating new ones
 4. Commit to git after each completed feature
 5. Use JSON for state files, not Markdown
-...</code></pre>
+...
+~~~
+
 <p>文件随时间增长，形成组织的Agent知识库。</p>
 <p><strong>实践二：机械可验证工具</strong></p>
 <p>如果Agent反复失败，就构建工具使其<strong>机械性地强制执行正确行为</strong>。</p>
@@ -561,7 +629,9 @@ def fetch_page(url: str) -&gt; str:
 <h4><strong>5.4 模型-Harness协同进化</strong></h4>
 <p>OpenAI和Anthropic的产品（如Codex、Claude Code）采用<strong>模型与Harness协同训练</strong>。</p>
 <p><strong>循环过程</strong>：</p>
-<pre><code class="language-text">1. 发现原语（如 Skills、Compaction）
+
+~~~text
+1. 发现原语（如 Skills、Compaction）
    ↓
 2. 添加到 Harness 并标准化
    ↓
@@ -569,7 +639,9 @@ def fetch_page(url: str) -&gt; str:
    ↓
 4. 模型在 Harness 中表现提升
    ↓
-5. 回到步骤 1</code></pre>
+5. 回到步骤 1
+~~~
+
 <p><strong>副作用</strong>：模型可能对特定Harness过拟合。例如，Codex对<code>apply_patch</code>工具逻辑高度依赖，更换工具逻辑会导致性能下降。</p>
 <hr/>
 <h3>六、实战案例：从零构建一个生产级Coding Agent Harness</h3>
@@ -585,7 +657,9 @@ def fetch_page(url: str) -&gt; str:
 </ul>
 <h4><strong>6.2 架构设计</strong></h4>
 <p>采用<strong>Initializer-Executor模式</strong>：</p>
-<pre><code class="language-python">class CodingAgentHarness:
+
+~~~python
+class CodingAgentHarness:
     def __init__(self, model: str = "gpt-4"):
         self.model = load_model(model)
         self.sandbox = create_sandbox()
@@ -665,14 +739,18 @@ def fetch_page(url: str) -&gt; str:
 
         # 7. Git 提交
         self.git.commit(f"Complete: {current_task['name']}")
-        return result</code></pre>
+        return result
+~~~
+
 <h4><strong>6.3 工具集成示例</strong></h4>
 <p>集成Firecrawl用于Web数据获取：</p>
-<pre><code class="language-python">class FirecrawlTool:
+
+~~~python
+class FirecrawlTool:
     def __init__(self, api_key: str):
         self.client = Firecrawl(api_key=api_key)
 
-    def search(self, query: str, limit: int = 5) -&gt; list:
+    def search(self, query: str, limit: int = 5) -> list:
         """搜索网络并返回结构化结果"""
         result = self.client.search(
             query=query,
@@ -681,7 +759,7 @@ def fetch_page(url: str) -&gt; str:
         )
         return result.web
 
-    def scrape(self, url: str) -&gt; str:
+    def scrape(self, url: str) -> str:
         """抓取网页并返回 Markdown"""
         result = self.client.scrape(
             url=url,
@@ -689,20 +767,24 @@ def fetch_page(url: str) -&gt; str:
         )
         return result.markdown
 
-    def extract(self, prompt: str) -&gt; dict:
+    def extract(self, prompt: str) -> dict:
         """自主导航并提取数据"""
         result = self.client.agent(prompt=prompt)
         return result.data
 
 # 注册到 Harness
 tools.register("web_search", FirecrawlTool(api_key="...").search)
-tools.register("fetch_page", FirecrawlTool(api_key="...").scrape)</code></pre>
+tools.register("fetch_page", FirecrawlTool(api_key="...").scrape)
+~~~
+
 <h4><strong>6.4 上下文管理</strong></h4>
 <p>实现智能压缩：</p>
-<pre><code class="language-python">def compact_context(self, context: Context) -&gt; Context:
+
+~~~python
+def compact_context(self, context: Context) -> Context:
     """压缩上下文策略"""
     # 1. 如果未超过阈值，直接返回
-    if context.token_count &lt; self.max_tokens * 0.8:
+    if context.token_count < self.max_tokens * 0.8:
         return context
 
     # 2. 提取关键决策
@@ -716,7 +798,7 @@ tools.register("fetch_page", FirecrawlTool(api_key="...").scrape)</code></pre>
 
     # 4. 工具输出卸载
     for call in context.tool_calls:
-        if len(call.output) &gt; 5000:
+        if len(call.output) > 5000:
             # 保存到文件
             file_path = f".harness/tool_outputs/{call.id}.txt"
             self.fs.write(file_path, call.output)
@@ -730,10 +812,14 @@ tools.register("fetch_page", FirecrawlTool(api_key="...").scrape)</code></pre>
         decisions=decisions,
         recent_history=context.history[-5:],
         current_task=context.current_task,
-    )</code></pre>
+    )
+~~~
+
 <h4><strong>6.5 验证机制</strong></h4>
 <p>实现自验证循环：</p>
-<pre><code class="language-python">def execute_with_verification(self, task: Task) -&gt; Result:
+
+~~~python
+def execute_with_verification(self, task: Task) -> Result:
     """执行并验证"""
     max_retries = 3
 
@@ -755,9 +841,15 @@ tools.register("fetch_page", FirecrawlTool(api_key="...").scrape)</code></pre>
 ```"""
         self.context.inject(error_msg)
 
-    raise MaxRetriesExceeded("Verification failed")</code></pre>
-<pre><code class="language-python"># 超过重试次数，抛出异常
-raise MaxRetriesExceeded(f"Failed after {max_retries} attempts")</code></pre>
+    raise MaxRetriesExceeded("Verification failed")
+~~~
+
+
+~~~python
+# 超过重试次数，抛出异常
+raise MaxRetriesExceeded(f"Failed after {max_retries} attempts")
+~~~
+
 <hr/>
 <h3>七、未来趋势：Harness将如何重塑AI开发范式？</h3>
 <h4><strong>7.1 Harness Engineering的崛起</strong></h4>
@@ -802,7 +894,9 @@ raise MaxRetriesExceeded(f"Failed after {max_retries} attempts")</code></pre>
 <li>• 自动调整配置</li>
 <li>• 生成新的规则</li>
 </ul>
-<pre><code class="language-python">def self_diagnose(self, trace: ExecutionTrace):
+
+~~~python
+def self_diagnose(self, trace: ExecutionTrace):
     """Harness 自诊断"""
     # 1. 分析失败模式
     failure_mode = self.analyzer.identify_pattern(trace)
@@ -814,7 +908,9 @@ raise MaxRetriesExceeded(f"Failed after {max_retries} attempts")</code></pre>
     self.apply_fix(fix)
 
     # 4. 更新规则
-    self.agents_md.add_rule(fix.rule)</code></pre>
+    self.agents_md.add_rule(fix.rule)
+~~~
+
 <p><strong>方向三：即时工具组装（Just-in-Time Tool Assembly）</strong></p>
 <p>当前Harness预配置工具集。未来Harness将：</p>
 <ul>
@@ -888,4 +984,5 @@ raise MaxRetriesExceeded(f"Failed after {max_retries} attempts")</code></pre>
 </blockquote>
 <p>2026年，Harness不是可选项，而是必选项。</p>
 <p><strong>现在，开始构建你的Harness吧！</strong></p>
-</https:>
+
+
