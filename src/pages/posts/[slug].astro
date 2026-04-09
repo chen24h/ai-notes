@@ -25,10 +25,11 @@ const slugify = (input: string) =>
 
 const extractHeadings = (body: string) => {
   const items: { text: string; level: number }[] = [];
+  const bodyWithoutCode = body.replace(/~~~[\s\S]*?~~~/g, "");
 
   const headingPattern = /^(##{1,3})\s+(.+)$|<h([2-4])[^>]*>([\s\S]*?)<\/h\3>/gm;
   let match;
-  while ((match = headingPattern.exec(body)) !== null) {
+  while ((match = headingPattern.exec(bodyWithoutCode)) !== null) {
     if (match[1] && match[2]) {
       items.push({
         level: match[1].length,
