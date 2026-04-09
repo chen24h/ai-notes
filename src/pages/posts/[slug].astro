@@ -3,6 +3,59 @@ import { getCollection, render } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import FactLedger from "../../components/FactLedger.astro";
 import SourceList from "../../components/SourceList.astro";
+import TableOfContents from "../../components/TableOfContents.astro";
+
+const stripTags = (input: string) =>
+  input
+    .replace(/<[^>]+>/g, "")
+    .replace(/&amp;/g, "&")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/&#39;/g, "'")
+    .replace(/&quot;/g, '"')
+    .trim();
+
+const slugify = (input: string) =>
+  input
+    .toLowerCase()
+    .normalize("NFKD")
+    .replace(/[^\p{Letter}\p{Number}\s-]/gu, "")
+    .trim()
+    .replace(/\s+/g, "-");
+
+const extractHeadings = (body: string) => {
+  const items: { text: string; level: number }[] = [];
+
+  const headingPattern = /^(##{1,3})\s+(.+)$|<h([2-4])[^>]*>([\s\S]*?)<\/h\3>/gm;
+  let match;
+  while ((match = headingPattern.exec(body)) !== null) {
+    if (match[1] && match[2]) {
+      items.push({
+        level: match[1].length,
+        text: stripTags(match[2]),
+      });
+      continue;
+    }
+
+    if (match[3] && match[4]) {
+      items.push({
+        level: Number(match[3]),
+        text: stripTags(match[4]),
+      });
+    }
+  }
+
+  const counts = new Map<string, number>();
+  return items.map((item) => {
+    const base = slugify(item.text) || `section-${item.level}`;
+    const seen = counts.get(base) ?? 0;
+    counts.set(base, seen + 1);
+    return {
+      ...item,
+      id: seen === 0 ? base : `${base}-${seen + 1}`,
+    };
+  });
+};
 
 export async function getStaticPaths() {
   const posts = await getCollection("posts", ({ data }) => data.status === "published");
@@ -15,6 +68,7 @@ export async function getStaticPaths() {
 
 const { post } = Astro.props;
 const { Content } = await render(post);
+const headings = extractHeadings(post.body);
 ---
 
 <BaseLayout title={`${post.data.title} | Tower Notes`} description={post.data.summary}>
@@ -34,19 +88,25 @@ const { Content } = await render(post);
       </div>
     </header>
 
-    <section class="article-body panel prose">
-      <div class="callout">
-        <p class="eyebrow">Truth Standard</p>
-        <p>{post.data.truthStandard}</p>
-      </div>
-      <div class="callout">
-        <p class="eyebrow">Core Thesis</p>
-        <p>{post.data.thesis}</p>
-      </div>
-      <Content />
-    </section>
+    <div class="article-layout">
+      <TableOfContents headings={headings} />
 
-    <FactLedger facts={post.data.facts} />
-    <SourceList sources={post.data.sources} />
+      <div class="article-main">
+        <section class="article-body panel prose">
+          <div class="callout">
+            <p class="eyebrow">Truth Standard</p>
+            <p>{post.data.truthStandard}</p>
+          </div>
+          <div class="callout">
+            <p class="eyebrow">Core Thesis</p>
+            <p>{post.data.thesis}</p>
+          </div>
+          <Content />
+        </section>
+
+        <FactLedger facts={post.data.facts} />
+        <SourceList sources={post.data.sources} />
+      </div>
+    </div>
   </article>
 </BaseLayout>
